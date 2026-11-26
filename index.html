@@ -137,7 +137,81 @@ html,body{width:100%;height:100%;overflow:hidden;background:#08111a}body{display
 .stage[data-theme]:not([data-theme=tv]) .rank.winner .panel,.stage[data-theme]:not([data-theme=tv]) .rank.runner .panel{background:linear-gradient(#fff3bb,#eac35f);border-color:#fff1a2}.stage[data-theme]:not([data-theme=tv]) .rank.winner .name,.stage[data-theme]:not([data-theme=tv]) .rank.runner .name,.stage[data-theme]:not([data-theme=tv]) .rank.winner .score strong,.stage[data-theme]:not([data-theme=tv]) .rank.runner .score strong,.stage[data-theme]:not([data-theme=tv]) .rank.runner .sub,.stage[data-theme]:not([data-theme=tv]) .rank.winner .sub{color:#362305;-webkit-text-stroke:0;text-shadow:0 1px #fff8}
 @media(prefers-reduced-motion:reduce){.stage .rank.entered,.stage .rank.winner{animation-duration:.01s}}
 
-</style></head><body><header><div><b>RANKSHOW TV</b> <small>TVクイズスタジオ</small></div><div class="tools"><button class="primary" id="auto">▶ 動画風の演出</button><button id="quiz">クイズモード</button><button id="next">次の順位</button><button id="first">1位発表</button><button id="reset">リセット</button><button id="full">全画面</button><button id="sound">音声 OFF</button><button id="edit">教材編集</button></div></header><main><div class="viewport" id="viewport"><div class="stage" id="stage"><div class="bokeh" id="bokeh"></div><div class="banner"><svg viewBox="0 0 1300 126"><path d="M0 4H125L145 29H1160L1180 4H1300Q1254 39 1250 91H48Q45 39 0 4Z" fill="#ffda3f"/><path d="M125 4L80 28L112 108L145 29Z M1180 4L1220 29L1187 108L1160 29Z" fill="#cfa719"/><path d="M80 28H1220L1180 124H112Z" fill="#ffda3f" stroke="#e2b82e" stroke-width="5"/></svg><div class="headline"><span class="tag">沖縄県民が表彰</span><span class="topic">我が地元代表アーティスト</span></div></div><div class="board" id="board"></div><svg class="medal" id="medal" viewBox="0 0 180 250"><defs><linearGradient id="m" x2="1" y2="1"><stop stop-color="#a27321"/><stop offset=".25" stop-color="#fff3b2"/><stop offset=".48" stop-color="#e8d18a"/><stop offset=".75" stop-color="#fff8c8"/><stop offset="1" stop-color="#a97b29"/></linearGradient><linearGradient id="r" x2="1" y2="1"><stop stop-color="#790016"/><stop offset=".5" stop-color="#ed1642"/><stop offset="1" stop-color="#81001d"/></linearGradient></defs><path d="M53 116L5 232L32 226L53 246L92 137L129 245L149 224L175 232L128 116Z" fill="url(#r)" stroke="#e7ba64" stroke-width="3"/><path d="M59 130L17 232M120 130L162 232" stroke="#ffe5a6" stroke-width="2"/><circle cx="90" cy="78" r="73" fill="#b60024" stroke="#e5b448" stroke-width="4" stroke-dasharray="3 3"/><circle cx="90" cy="78" r="65" fill="url(#m)" stroke="#9f712a" stroke-width="3"/><circle cx="90" cy="78" r="56" fill="#fff1be" fill-opacity=".45" stroke="#fff8db" stroke-width="2"/><text x="89" y="110" text-anchor="middle" font-family="Arial" font-style="italic" font-weight="900" font-size="89" fill="#fff" stroke="#85001c" stroke-width="3" paint-order="stroke fill">1<tspan font-size="31">位</tspan></text></svg><div class="spark" id="spark"></div><div class="criteria"><b>評価項目</b><span>①認知度　②好感度　③口ずさみ度<small>（サビが歌えるかなど）</small>　④地域貢献度　⑤自慢度</span></div></div></div><div class="hint">動画風の演出：10位から連続登場 → 2位を点滅 → 1位発表。クイズモード：各パネルをクリックして公開。Space＝次の順位、1＝第1位、F＝全画面。データは参考映像の表示を転記（MOGOL800も映像表記のまま）。</div></main><dialog id="editor"><h2>Ranking Creator</h2><p class="status">最大10位。写真は任意の画像URL。編集内容はこのブラウザーに保存されます。</p><div class="editor-head"><label>赤い見出し<input id="eTag"></label><label>タイトル<input id="eTitle"></label><label>数値のラベル<input id="eLabel"></label><label>単位<input id="eUnit"></label><label style="grid-column:1/-1">出典・説明<input id="eFooter"></label></div><div class="editor-row"><b>#</b><small>答え</small><small>数値</small><small>補足</small><small>写真URL</small></div><div id="eRows"></div><div class="editor-actions"><button class="primary" id="save">保存してクイズ開始</button><button id="sample">参考データに戻す</button><button id="export">JSON出力</button><button id="import">JSON読込</button><input id="file" type="file" accept="application/json,.json" hidden><button id="cancel">閉じる</button></div><p id="error" role="alert" class="status"></p></dialog><script>
+
+/* 3.1 — optical alignment and vector broadcast package */
+.stage{font-family:'Arial Narrow','Yu Gothic','Meiryo',Arial,sans-serif}
+.stage .banner{top:19px;width:1310px;height:126px;filter:drop-shadow(0 3px 1px #65470a35) drop-shadow(0 0 3px #fffe)}
+.stage .headline{top:37px;left:112px;right:112px;height:65px;gap:17px;line-height:1.12}
+.stage .headline .tag{padding:4px 11px 5px;font-weight:900;letter-spacing:-1.4px;border-radius:5px;background:linear-gradient(#ef3226,#d80c0b 48%,#b5090d);box-shadow:inset 0 1px 0 #fff7,0 2px 1px #8d24044a}
+.stage .headline .topic{font-weight:900;letter-spacing:-1.5px;color:#0647bc;-webkit-text-stroke:3.8px #fff;paint-order:stroke fill;text-shadow:0 2px 0 #133b77,1px 0 #183565,-1px 0 #183565}
+.stage .board{left:64px;right:62px;top:167px;bottom:69px;grid-template-rows:repeat(5,94px);column-gap:40px;align-content:space-between}
+.stage .rank{filter:none;overflow:visible;isolation:isolate}
+.stage .rank .num{width:132px;height:94px;padding:0 12px 3px 13px;gap:3px;font-family:'Arial Narrow','Roboto Condensed','Liberation Sans Narrow',Arial,sans-serif;font-weight:800;font-size:62px;letter-spacing:-3.5px;font-variant-numeric:tabular-nums;line-height:1;text-shadow:0 2px 1px #0008;z-index:1}
+.stage .rank:nth-child(10) .num{font-size:48px;letter-spacing:-3px;padding-left:9px;padding-right:14px;gap:1px}
+.stage .rank .num small{font-size:24px;letter-spacing:-1px;align-self:center;margin:20px 0 0}
+.stage .rank .answer{padding:0 7px 10px 7px;justify-content:center;z-index:1}
+.stage .rank .name{font-family:'Arial Narrow','Roboto Condensed','Liberation Sans Narrow','Yu Gothic','Meiryo',Arial,sans-serif;font-weight:800;letter-spacing:-1px;line-height:1.04;-webkit-text-stroke:2.3px #fff;paint-order:stroke fill;text-shadow:0 1px 0 #fff9;max-width:none}
+.stage .rank .sub{font-size:19px;font-weight:700;line-height:1.15;margin-top:2px}
+.stage .score{width:122px;padding:0 10px 9px 3px;gap:4px;z-index:1;font-weight:800}
+.stage .score b{background:linear-gradient(#24282a,#101417);font-size:17px;border-radius:3px;padding:2px 6px;line-height:1.05;max-width:110px;box-shadow:0 1px 1px #fff6}
+.stage .score strong{font-size:25px;letter-spacing:-.65px;-webkit-text-stroke:1.25px #fff;line-height:1.1}
+.stage .score small{font-size:15px;margin-left:2px}
+.stage .thumb{width:64px;height:64px;z-index:1;margin:0 6px 8px 0}
+.stage .rank .cover{inset:0 0 9px 113px;border:1px solid #d5aa48;box-shadow:inset 0 1px #fff9,inset 0 -3px #9a6c1d33}
+.stage .rank.hidden-answer .cover:after{font-size:52px;font-weight:800;text-shadow:0 2px 2px #72521755}
+.stage .criteria{height:42px;gap:15px;padding:0 48px;font-size:21px;font-weight:700;letter-spacing:0;background:#f5fafaeF}
+.stage .criteria b{font-size:18px;padding:3px 7px;background:#c7181d;line-height:1.15}
+.stage .medal{left:48px;top:151px;width:126px;height:125px;filter:drop-shadow(0 3px 2px #442a1d44)}
+.stage .medal.show{animation:medal31 .74s .2s cubic-bezier(.17,.8,.25,1.12) both}
+@keyframes medal31{0%{opacity:0;transform:translateY(-18px) scale(.25) rotate(-25deg)}72%{opacity:1;transform:scale(1.07) rotate(3deg)}100%{opacity:1;transform:none}}
+.stage .rank.winner{animation:champ31 .68s cubic-bezier(.15,.8,.25,1.1) both}
+@keyframes champ31{0%{transform:none}40%{transform:scale(1.035)}100%{transform:scale(1.015)}}
+.stage .rank.runner{outline:0;box-shadow:none}
+.stage .rank.runner:not(.vector-tv){outline:2px solid #cb202a;outline-offset:-1px}
+.stage .rank.entered{animation:rapid31 .26s cubic-bezier(.13,.88,.28,1) both}
+@keyframes rapid31{0%{opacity:0;transform:translateX(var(--entry)) scaleX(.965)}12%{opacity:1}84%{transform:translateX(var(--bounce,2px))}100%{opacity:1;transform:none}}
+.stage .rank:nth-child(n+6){--bounce:-2px}
+.stage .rank.winner.entered{animation:champ31 .68s cubic-bezier(.15,.8,.25,1.1) both}
+.rank .vector-art{display:none;position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+.stage[data-theme=tv]{background:radial-gradient(ellipse at 50% 48%,#fff 0%,#f1faf9 29%,#d2e7e9 57%,#8ebdc5 100%)}
+.stage[data-theme=tv]::before{opacity:.16;background:repeating-linear-gradient(124deg,transparent 0 170px,#fff4 171px 172px,transparent 173px 245px)}
+.stage[data-theme=tv]::after{opacity:.33}.stage[data-theme=tv] .bokeh{opacity:.78}.stage[data-theme=tv] .bokeh i{box-shadow:none}
+.stage[data-theme=tv] .rank .vector-art{display:block}
+.stage[data-theme=tv] .rank::before{display:none}
+.stage[data-theme=tv] .rank .panel{background:none;border:0;box-shadow:none;inset:3px 3px 9px 115px;z-index:1;pointer-events:none}
+.stage[data-theme=tv] .rank .panel::after{background:linear-gradient(112deg,transparent 26%,#fffc 47%,transparent 62%);opacity:.65}
+.stage[data-theme=tv] .rank .num{background:transparent;clip-path:none;box-shadow:none}
+.stage[data-theme=tv] .rank.runner,.stage[data-theme=tv] .rank.winner{outline:none;box-shadow:none}
+.stage[data-theme=tv] .rank.runner .panel,.stage[data-theme=tv] .rank.winner .panel{background:none;border:0;box-shadow:none}
+.stage[data-theme=tv] .rank.blink .panel{animation:none}
+.vector-art{--face1:#bdefff;--face2:#8ddcf3;--face3:#82d4ec;--face4:#a6e7f5;--edge1:#d9f8ff;--edge2:#43abc9;--base1:#ffff79;--base2:#d7e934;--base3:#b7ce1e}
+.rank.runner .vector-art,.rank.winner .vector-art{--face1:#fffac4;--face2:#ffff61;--face3:#f5e925;--face4:#fff66c;--edge1:#fffde5;--edge2:#c6ad22;--base1:#b2edfa;--base2:#7dd0e7;--base3:#55b5d0}
+.vector-art .runner-stroke{opacity:0}.rank.runner .vector-art .runner-stroke{opacity:1}
+.rank.blink .vector-art .runner-stroke{animation:edgePulse .48s ease-in-out 5}
+@keyframes edgePulse{50%{opacity:.25}}
+.stage[data-theme]:not([data-theme=tv]) .rank .name{letter-spacing:-.7px;font-weight:800;-webkit-text-stroke:0;text-shadow:0 1px 1px var(--shadow)}
+.stage[data-theme]:not([data-theme=tv]) .score strong{-webkit-text-stroke:0}
+.stage[data-theme]:not([data-theme=tv]) .criteria{color:var(--ink);background:var(--panel2)}
+@media(prefers-reduced-motion:reduce){.stage .rank.entered,.stage .rank.winner.entered,.stage .medal.show{animation-duration:.01s;animation-delay:0s}.rank.blink .vector-art .runner-stroke{animation:none}}
+
+.stage[data-theme=tv] .banner svg>path:nth-of-type(1){fill:url(#ribbonWing)}.stage[data-theme=tv] .banner svg>path:nth-of-type(3){fill:url(#ribbonFront)}
+</style></head><body><header><div><b>RANKSHOW TV</b> <small>TVクイズスタジオ</small></div><div class="tools"><button class="primary" id="auto">▶ 動画風の演出</button><button id="quiz">クイズモード</button><button id="next">次の順位</button><button id="first">1位発表</button><button id="reset">リセット</button><button id="full">全画面</button><button id="sound">音声 OFF</button><button id="edit">教材編集</button></div></header><main><div class="viewport" id="viewport"><div class="stage" id="stage"><div class="bokeh" id="bokeh"></div><div class="banner"><svg viewBox="0 0 1300 126" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="ribbonFront" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff3a3"/><stop offset=".06" stop-color="#ffe878"/><stop offset=".5" stop-color="#ffda3f"/><stop offset="1" stop-color="#ffdf50"/></linearGradient><linearGradient id="ribbonWing" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe98a"/><stop offset="1" stop-color="#f8ca30"/></linearGradient></defs>
+<path d="M5 5H121L145 29H1155L1179 5H1295Q1258 35 1252 91H48Q42 35 5 5Z" fill="#ffda3f" stroke="#fffce5" stroke-width="3" stroke-linejoin="round"/>
+<path d="M121 5L80 29L109 109L145 29Z M1179 5L1220 29L1191 109L1155 29Z" fill="#cfa719"/>
+<path d="M80 29H1220L1184 121H116Z" fill="#ffda3f" stroke="#cfa719" stroke-width="3.5" stroke-linejoin="round"/>
+<path d="M86 33H1214L1180 116H120Z" fill="none" stroke="#fff8ce" stroke-width="1.5" opacity=".75"/>
+<path d="M90 37H1210" fill="none" stroke="#fff" stroke-width="1" opacity=".8"/>
+</svg><div class="headline"><span class="tag">沖縄県民が表彰</span><span class="topic">我が地元代表アーティスト</span></div></div><div class="board" id="board"></div><svg class="medal" id="medal" viewBox="0 0 126 132" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="m31" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9b6315"/><stop offset=".18" stop-color="#fff1ac"/><stop offset=".38" stop-color="#e9c35e"/><stop offset=".65" stop-color="#fff9cf"/><stop offset="1" stop-color="#b07925"/></linearGradient><linearGradient id="s31" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fffbec"/><stop offset=".55" stop-color="#f5df98"/><stop offset="1" stop-color="#d4a74d"/></linearGradient><linearGradient id="r31"><stop stop-color="#8f0a24"/><stop offset=".42" stop-color="#e62b43"/><stop offset=".7" stop-color="#b81130"/><stop offset="1" stop-color="#6b071a"/></linearGradient></defs>
+<path d="M36 75L10 123L28 120L36 130L61 88L86 130L96 119L115 123L87 75Z" fill="url(#r31)" stroke="#e6bb5e" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M40 82L20 121M82 82L105 121" stroke="#fff0a1" stroke-width="1.3"/>
+<circle cx="63" cy="52" r="48" fill="#a30b26" stroke="#d8a63e" stroke-width="2.7" stroke-dasharray="2 2"/>
+<circle cx="63" cy="52" r="43.4" fill="url(#m31)" stroke="#835015" stroke-width="1.5"/>
+<circle cx="63" cy="52" r="38" fill="url(#s31)" stroke="#fff8d8" stroke-width="1.8"/>
+<circle cx="63" cy="52" r="34.5" fill="none" stroke="#bc9034" stroke-width=".7"/>
+<path d="M37 35Q63 13 89 35" fill="none" stroke="#fff" opacity=".8" stroke-width="1.6" stroke-linecap="round"/>
+<text x="60" y="72" font-family="Arial,sans-serif" font-weight="900" font-style="italic" font-size="56" text-anchor="middle" fill="#fffaf0" stroke="#8d1630" stroke-width="1.5" paint-order="stroke fill">1<tspan font-size="19" font-style="normal">位</tspan></text></svg><div class="spark" id="spark"></div><div class="criteria"><b>評価項目</b><span>①認知度　②好感度　③口ずさみ度<small>（サビが歌えるかなど）</small>　④地域貢献度　⑤自慢度</span></div></div></div><div class="hint">動画風の演出：10位から連続登場 → 2位を点滅 → 1位発表。クイズモード：各パネルをクリックして公開。Space＝次の順位、1＝第1位、F＝全画面。データは参考映像の表示を転記（MOGOL800も映像表記のまま）。</div></main><dialog id="editor"><h2>Ranking Creator</h2><p class="status">最大10位。写真は任意の画像URL。編集内容はこのブラウザーに保存されます。</p><div class="editor-head"><label>赤い見出し<input id="eTag"></label><label>タイトル<input id="eTitle"></label><label>数値のラベル<input id="eLabel"></label><label>単位<input id="eUnit"></label><label style="grid-column:1/-1">出典・説明<input id="eFooter"></label></div><div class="editor-row"><b>#</b><small>答え</small><small>数値</small><small>補足</small><small>写真URL</small></div><div id="eRows"></div><div class="editor-actions"><button class="primary" id="save">保存してクイズ開始</button><button id="sample">参考データに戻す</button><button id="export">JSON出力</button><button id="import">JSON読込</button><input id="file" type="file" accept="application/json,.json" hidden><button id="cancel">閉じる</button></div><p id="error" role="alert" class="status"></p></dialog><script>
 const DEFAULT={tag:'沖縄県民が表彰',title:'我が地元代表アーティスト',label:'総合点',unit:'pt',footer:'①認知度　②好感度　③口ずさみ度（サビが歌えるかなど）　④地域貢献度　⑤自慢度',rows:[['安室奈美恵','96.1'],['BEGIN','93.4'],['HY','90.6'],['MOGOL800','74.2'],['かりゆし58','69.7'],['夏川りみ','67.9'],['Kiroro','67.6'],['ORANGE RANGE','64.3'],['DA PUMP','60.3'],['THE BOOM','55.6','「♪島唄」']]};
 const $=id=>document.getElementById(id),board=$('board'),stage=$('stage');
 const clone=x=>JSON.parse(JSON.stringify(x));let model=clone(DEFAULT);try{const saved=localStorage.getItem('rankshow-tv-v1');if(saved)model=validate(JSON.parse(saved))}catch{}let ranks=[],timers=[],epoch=0,sound=false,ctx=null;
@@ -147,7 +221,7 @@ function tone(kind){if(!sound)return;try{ctx??=new (window.AudioContext||window.
 for(let i=0;i<18;i++){let el=document.createElement('i');let size=28+Math.random()*112;el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;--dur:${4+Math.random()*8}s;--dx:${Math.random()*110-55}px;--dy:${Math.random()*130-65}px;opacity:${.2+Math.random()*.65}`;$('bokeh').append(el)}
 function node(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
 function render(){stop();board.replaceChildren();document.querySelector('.headline .tag').textContent=model.tag;document.querySelector('.headline .topic').textContent=model.title;document.querySelector('.criteria span').textContent=model.footer;document.querySelector('.criteria b').textContent='出典・説明';ranks=model.rows.map(([n,s,sub,img],i)=>{const b=node('button','rank');b.type='button';b.setAttribute('aria-label',`${i+1}位を公開`);const num=node('span','num',String(i+1));num.append(node('small','', '位'));const answer=node('span','answer');answer.append(node('span','name',n));if(sub)answer.append(node('span','sub',sub));const score=node('span','score');const strong=node('strong','',s);strong.append(node('small','',model.unit));score.append(node('b','',model.label),strong);b.append(node('span','panel'),num);if(img&&/^https?:\/\//i.test(img)){const photo=node('img','thumb');photo.src=img;photo.alt='';photo.referrerPolicy='no-referrer';photo.onerror=()=>{photo.remove();fitNames()};b.append(photo)}b.append(answer,score,node('span','cover'));board.append(b);b.onclick=()=>{stop();if(i===0)winner();else show(i)};return b});document.fonts.ready.then(fitNames)}
-function fitNames(){ranks.forEach((r,i)=>{let n=r.querySelector('.name');n.style.fontSize=i===9?'59px':'76px';let max=r.querySelector('.answer').clientWidth-16;while(n.scrollWidth>max&&parseFloat(n.style.fontSize)>16)n.style.fontSize=parseFloat(n.style.fontSize)-1+'px'});const tag=document.querySelector('.headline .tag'),topic=document.querySelector('.headline .topic');tag.style.fontSize='48px';topic.style.fontSize='50px';while(tag.offsetWidth+topic.offsetWidth+20>1020&&parseFloat(topic.style.fontSize)>18){topic.style.fontSize=parseFloat(topic.style.fontSize)-1+'px';tag.style.fontSize=Math.max(18,parseFloat(tag.style.fontSize)-.7)+'px'}}
+function fitNames(){ranks.forEach((r,i)=>{const n=r.querySelector('.name'),a=r.querySelector('.answer'),s=r.querySelector('.score strong');if(!n||!a)return;let size=64;if(n.textContent.length>10)size=56;n.style.fontSize=size+'px';const max=Math.max(28,a.clientWidth-18);while(n.scrollWidth>max&&size>13){size--;n.style.fontSize=size+'px'}if(s){let fs=25;s.style.fontSize=fs+'px';while(s.scrollWidth>111&&fs>13){fs--;s.style.fontSize=fs+'px'}}});const tag=document.querySelector('.headline .tag'),topic=document.querySelector('.headline .topic'),line=tag.parentElement;let ts=41,ps=47;tag.style.fontSize=ts+'px';topic.style.fontSize=ps+'px';while(tag.offsetWidth+topic.offsetWidth+17>line.clientWidth-8&&ps>15){ps--;ts=Math.max(13,ts-.65);topic.style.fontSize=ps+'px';tag.style.fontSize=ts+'px'}}
 function resize(){const v=$('viewport');stage.style.setProperty('--scale',Math.min(v.clientWidth/1500,v.clientHeight/843.75))}new ResizeObserver(resize).observe($('viewport'));resize();
 function clear(){stop();ranks.forEach(r=>{r.className='rank';r.style.animationDelay=''});$('medal').classList.remove('show');$('spark').replaceChildren()}
 function show(i,hide=false){let r=ranks[i],wasHidden=r.classList.contains('hidden-answer');if(!hide&&r.classList.contains('entered')&&!wasHidden)return;r.classList.add('entered');r.classList.toggle('hidden-answer',hide);if(!hide){tone('open');if(wasHidden&&i!==0)r.classList.add('opening');if(i===1)r.classList.add('runner')}}
@@ -234,6 +308,35 @@ $('openLibrary').onclick=()=>{menu(false);stop();renderLibrary();library.showMod
 const originalSave=$('save').onclick;$('save').onclick=()=>{originalSave();if(!$('editor').open){selected='custom';persist();applyTheme()}};
 v.append($('editor'));document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false);if(e.key.toLowerCase()==='l'&&!library.open&&!$('editor').open&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)){e.preventDefault();$('openLibrary').click()}});
 document.title='RankShow TV 3.0';render();applyTheme();quiz();
+})();
+
+</script><script>
+
+/* Vector artwork is geometry, not a screenshot; generated for every card. */
+(()=>{
+const ns='http://www.w3.org/2000/svg';
+const makeArt=i=>{
+ const svg=document.createElementNS(ns,'svg');svg.setAttribute('class','vector-art');svg.setAttribute('viewBox','0 0 667 94');svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('aria-hidden','true');
+ const f='face31-'+i,b='base31-'+i,m='metal31-'+i,e='edge31-'+i;
+ svg.innerHTML='<defs><linearGradient id="'+f+'" x1="0" y1="0" x2="0" y2="1"><stop style="stop-color:var(--face1)"/><stop offset=".12" style="stop-color:var(--face2)"/><stop offset=".76" style="stop-color:var(--face3)"/><stop offset="1" style="stop-color:var(--face4)"/></linearGradient><linearGradient id="'+b+'" x1="0" y1="0" x2="0" y2="1"><stop style="stop-color:var(--base1)"/><stop offset=".7" style="stop-color:var(--base2)"/><stop offset="1" style="stop-color:var(--base3)"/></linearGradient><linearGradient id="'+e+'" x1="0" y1="0" x2="0" y2="1"><stop style="stop-color:var(--edge1)"/><stop offset="1" style="stop-color:var(--edge2)"/></linearGradient><linearGradient id="'+m+'" x1="0" y1="0" x2="1" y2=".45"><stop stop-color="#101719"/><stop offset=".12" stop-color="#2c383c"/><stop offset=".22" stop-color="#606d70"/><stop offset=".31" stop-color="#222b2e"/><stop offset=".43" stop-color="#414c50"/><stop offset=".52" stop-color="#121a1d"/><stop offset=".77" stop-color="#202a2d"/><stop offset="1" stop-color="#080e11"/></linearGradient></defs>'+
+ '<rect x="29" y="15" width="636" height="77" rx="5" fill="#355b61" opacity=".17"/>'+
+ '<rect x="31" y="12" width="634" height="77" rx="5" fill="url(#'+b+')" stroke="#8d9a3355" stroke-width="1"/>'+
+ '<path d="M35 85H658" stroke="#fff" opacity=".35" stroke-width="1.5"/>'+
+ '<rect x="30" y="2.5" width="630" height="80" rx="5" fill="url(#'+f+')" stroke="url(#'+e+')" stroke-width="1.4"/>'+
+ '<path d="M128 5.5H655" stroke="#fff" stroke-width="1.25" opacity=".66"/>'+
+ '<path d="M112 79H655" stroke="#fff" stroke-width="1.2" opacity=".52"/>'+
+ '<path d="M27 0.8H133L108 90H0.8Z" fill="url(#'+m+')" stroke="#111b20" stroke-width="1.1" stroke-linejoin="round"/>'+
+ '<path d="M28 2.5H131M3 87H107" stroke="#fff" stroke-width=".9" opacity=".22"/>'+
+ '<path d="M133 1L108 90" stroke="#121a1d" stroke-width="1.5"/>'+
+ '<rect class="runner-stroke" x="1.5" y="1.5" width="661" height="87" rx="4.5" fill="none" stroke="#f01825" stroke-width="2.8"/>';
+ return svg;
+};
+const old=render;
+function decorate(){ranks.forEach((r,i)=>{if(!r.querySelector('.vector-art'))r.prepend(makeArt(i));r.classList.add('vector-tv')});}
+render=function(){old();decorate();fitNames()};
+decorate();fitNames();
+document.title='RankShow TV 3.1';
+const label=document.querySelector('.dock-panel h3');if(label)label.textContent='RANKSHOW TV / 3.1';
 })();
 
 </script></body></html>
