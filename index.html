@@ -1,0 +1,109 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RankShow TV</title><style>
+*{box-sizing:border-box}body{margin:0;background:#101b28;color:#f6f8fc;font-family:Arial,'Noto Sans CJK JP','Yu Gothic',Meiryo,sans-serif}button{font:inherit;cursor:pointer}header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;flex-wrap:wrap}header b{letter-spacing:.1em}header small{color:#b3c5d5}
+.tools{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid #52657a;background:#263a50;color:white;border-radius:8px;padding:9px 13px;font-weight:700}button:hover{background:#405c78}button.primary{background:#f7d64a;color:#212121;border-color:#f7d64a}main{width:min(100%,1600px);margin:auto;padding:0 10px}
+.viewport{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;background:#9dc7cc}
+.stage{width:1500px;height:843.75px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(var(--scale,1));overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 51%,#fff 4%,#f1f9f8 34%,#d0e6e8 57%,#91bfc7 100%);color:#000}
+.viewport:fullscreen{width:100%;height:100%;aspect-ratio:auto;background:#000}
+.stage::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(110deg,#fff0 0 6px,#fff1 8px 10px,#fff0 12px 30px);opacity:.25;pointer-events:none}
+.bokeh{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff9 0 62%,#fff2 83%,#fff0 100%);animation:drift var(--dur) ease-in-out infinite alternate;filter:blur(1px)}
+@keyframes drift{to{transform:translate(var(--dx),var(--dy)) scale(1.25);opacity:.35}}
+.banner{position:absolute;top:20px;left:15px;width:1300px;height:126px;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 4px white);z-index:2}
+.banner svg{position:absolute;inset:0;width:100%;height:100%}
+.headline{position:absolute;top:39px;left:145px;right:110px;height:70px;display:flex;align-items:center;justify-content:center;gap:20px;white-space:nowrap;font-weight:1000}
+.headline .tag{background:#ec0000;color:white;padding:3px 10px;border-radius:9px;font-size:48px;line-height:1.22;letter-spacing:-2px}
+.headline .topic{font-size:50px;letter-spacing:-2px;color:#063ac9;paint-order:stroke fill;-webkit-text-stroke:5px white;text-shadow:4px 4px 0 #101010,-4px -4px 0 #101010,4px -4px 0 #101010,-4px 4px 0 #101010,0 0 10px white;font-weight:1000}
+.board{position:absolute;left:54px;right:36px;top:166px;bottom:65px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,94px);grid-auto-flow:column;column-gap:50px;align-content:space-between}
+.rank{position:relative;border:0;padding:0;background:none;overflow:visible;display:flex;align-items:stretch;min-width:0;isolation:isolate;cursor:pointer;text-align:left;color:#000;opacity:0;transform:translateX(var(--entry,650px));border-radius:0;transition:none}
+.rank:hover{background:none}
+.rank.entered{opacity:1;transform:none;animation:arrive .42s cubic-bezier(.2,.75,.2,1) both}
+.rank:nth-child(-n+5){--entry:-680px}
+.rank:nth-child(n+6){--entry:680px}
+@keyframes arrive{0%{opacity:0;transform:translateX(var(--entry))}35%{opacity:1}100%{opacity:1;transform:translateX(0)}}
+.rank::before{content:'';position:absolute;inset:12px -6px -5px 31px;background:#f5ff39;border-radius:6px;z-index:-2}
+.panel{position:absolute;inset:0 0 9px 34px;background:#92e1f5;border-radius:7px;z-index:-1}
+.rank .num{height:94px;width:144px;flex:none;display:flex;align-items:center;justify-content:center;gap:3px;clip-path:polygon(20% 0,100% 0,80% 100%,0 100%);background:repeating-linear-gradient(0deg,#ffffff08 0 1px,#0000000a 2px 3px),linear-gradient(100deg,#111 6%,#404040 17%,#161616 29%,#494949 38%,#111 52%,#343434 66%,#0a0a0a 100%);color:white;font-size:72px;line-height:1;font-family:'Arial Narrow','Liberation Sans Narrow',Arial,sans-serif;font-weight:900;padding:0 10px 4px 13px;letter-spacing:-4px}
+.num small{font-size:34px;letter-spacing:-1px;align-self:flex-end;margin-bottom:17px}
+.answer{flex:1;min-width:0;display:flex;justify-content:center;flex-direction:column;align-items:flex-start;padding:0 6px 9px 10px}
+.name{font-weight:1000;font-size:76px;letter-spacing:-2px;line-height:1.02;white-space:nowrap;-webkit-text-stroke:5px #fff;paint-order:stroke fill;text-shadow:0 0 5px #fff;font-family:'Arial Narrow','Noto Sans CJK JP','Yu Gothic',Meiryo,Arial,sans-serif}
+.sub{font-weight:950;font-size:25px;line-height:1;align-self:center;margin-top:0}
+.score{width:106px;flex:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:0 8px 10px 0;font-weight:950}
+.score b{background:#050505;color:#fff;border-radius:4px;padding:1px 7px;font-size:24px;line-height:1.2;white-space:nowrap}
+.score strong{font-family:Arial,sans-serif;font-size:32px;white-space:nowrap;-webkit-text-stroke:2px white;paint-order:stroke fill;letter-spacing:-1px}
+.score small{font-size:22px}
+.cover{display:none;position:absolute;inset:0 0 9px 121px;border-radius:0 7px 7px 0;clip-path:polygon(4% 0,100% 0,100% 100%,0 100%);background:linear-gradient(115deg,#f7d63c,#fff79a 12%,#d7a00d 24%,#fff1a1 37%,#f3d13a 52%,#f9f09c 66%,#c89c11 83%,#fff8ac);overflow:hidden;z-index:2}
+.cover:before{content:'';position:absolute;inset:-60%;background:repeating-conic-gradient(from 10deg,#fff0 0deg 11deg,#fff8 12deg 23deg,#8b650422 24deg 33deg);animation:gold 4s linear infinite}
+@keyframes gold{to{transform:translateX(20%) rotate(12deg)}}
+.rank.hidden-answer .cover{display:block}
+.rank.hidden-answer .name,.rank.hidden-answer .score,.rank.hidden-answer .sub{visibility:hidden}
+.rank.runner .panel,.rank.winner .panel{background:#f9ff34}
+.rank.runner::before,.rank.winner::before{background:#91e1f4}
+.rank.runner{outline:5px solid red;outline-offset:-3px;border-radius:5px}
+.rank.blink .panel{animation:blink .42s linear 6}
+@keyframes blink{50%{background:#e6ff94;opacity:.45}}
+.rank.winner{z-index:5;animation:champ .7s cubic-bezier(.15,.75,.22,1.15) both;transform-origin:8% 50%}
+@keyframes champ{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1.085)}}
+.rank.reveal .cover{display:block;animation:uncover .56s ease-in forwards;pointer-events:none}
+@keyframes uncover{0%{transform:translateX(0);opacity:1}100%{transform:translateX(105%);opacity:0}}
+.rank.reveal .name,.rank.reveal .score{animation:flash .7s ease-out}
+@keyframes flash{0%{opacity:0;filter:brightness(2)}100%{opacity:1;filter:none}}
+.medal{position:absolute;z-index:8;left:7px;top:118px;width:182px;height:250px;opacity:0;pointer-events:none;transform:scale(.1) rotate(-30deg)}
+.medal.show{animation:medal .72s .25s cubic-bezier(.2,.85,.3,1.25) both}
+@keyframes medal{0%{opacity:0;transform:scale(.1) rotate(-30deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.spark{position:absolute;inset:0;pointer-events:none;z-index:9;overflow:hidden}
+.spark i{position:absolute;left:var(--x);top:var(--y);width:18px;height:18px;background:var(--color);clip-path:polygon(50% 0,60% 38%,100% 50%,60% 62%,50% 100%,40% 62%,0 50%,40% 38%);animation:scatter 1.6s var(--delay) both}
+@keyframes scatter{0%{transform:translate(0,0) scale(0)}25%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1.3)}100%{opacity:0;transform:translate(calc(var(--dx)*1.6),calc(var(--dy)*1.6)) scale(.3) rotate(150deg)}}
+.criteria{position:absolute;bottom:0;left:0;right:0;height:49px;background:#f4fafaeb;display:flex;align-items:center;gap:40px;padding:0 50px;font-size:30px;white-space:nowrap;font-weight:1000;letter-spacing:-1px}
+.criteria b{background:red;color:#fff;font-size:25px;padding:3px 6px;letter-spacing:0}
+.criteria small{font-size:22px}
+.hint{padding:12px 5px;color:#c0d0df;font-size:13px} @media(max-width:700px){header{padding:8px}button{font-size:12px;padding:7px}main{padding:0}}
+
+.rank:not(.entered){pointer-events:none}
+.rank:focus-visible{outline:4px solid #125aff;outline-offset:5px}
+.rank.hidden-answer .cover:after{content:'？';position:absolute;inset:0;display:grid;place-items:center;font-size:65px;font-weight:900;color:#9a680b;text-shadow:1px 2px #fff}
+.rank.reveal .cover:after{display:none}
+.rank.opening .cover{display:block;animation:uncover .48s ease-in forwards;pointer-events:none}
+.rank.opening .cover:after{display:none}
+.thumb{width:75px;height:75px;object-fit:cover;border-radius:5px;margin:4px 5px 0 0;flex:none;align-self:center}
+.rank.hidden-answer .thumb{visibility:hidden}
+.rank.reveal .thumb{animation:flash .7s ease-out}
+.banner{width:1300px;left:50%;transform:translateX(-50%)}
+.headline .topic,.headline .tag{flex:none}
+.rank[hidden]{display:none}
+.criteria span{overflow:hidden;text-overflow:ellipsis}
+.rank .cover{inset:0 0 9px 121px}
+.viewport:fullscreen .stage{margin:0}
+.tools button:disabled{opacity:.45;cursor:default}dialog{width:min(950px,94vw);max-height:90vh;border:1px solid #536b81;border-radius:15px;background:#172b3d;color:#fff;padding:20px;overflow:auto}dialog::backdrop{background:#000a}dialog h2{margin:0 0 12px}dialog label{display:grid;gap:5px;font-size:13px;color:#c9dce9}dialog input{min-width:0;width:100%;padding:8px;border-radius:6px;border:1px solid #587086;background:#0e1e30;color:white;font:inherit} .editor-head{display:grid;grid-template-columns:1fr 2fr;gap:12px;margin:12px 0}
+.editor-row{display:grid;grid-template-columns:28px minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,2fr);gap:8px;align-items:center;margin:8px 0}
+.editor-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.status{color:#c9dce9;font-size:13px}
+.rank.winner{animation:champ .7s cubic-bezier(.15,.75,.22,1.15) both}
+@media(max-width:600px){.editor-row{grid-template-columns:24px 1fr 1fr}
+.editor-row input:nth-last-child(-n+2){grid-column:span 1}
+.editor-head{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.bokeh i{animation:none}
+.rank.entered,.rank.winner,.rank.reveal .cover,.rank.opening .cover,.medal.show{animation-duration:.01s;animation-delay:0s}
+.spark{display:none}}
+</style></head><body><header><div><b>RANKSHOW TV</b> <small>TVクイズスタジオ</small></div><div class="tools"><button class="primary" id="auto">▶ 動画風の演出</button><button id="quiz">クイズモード</button><button id="next">次の順位</button><button id="first">1位発表</button><button id="reset">リセット</button><button id="full">全画面</button><button id="sound">音声 OFF</button><button id="edit">教材編集</button></div></header><main><div class="viewport" id="viewport"><div class="stage" id="stage"><div class="bokeh" id="bokeh"></div><div class="banner"><svg viewBox="0 0 1300 126"><path d="M0 4H125L145 29H1160L1180 4H1300Q1254 39 1250 91H48Q45 39 0 4Z" fill="#ffda3f"/><path d="M125 4L80 28L112 108L145 29Z M1180 4L1220 29L1187 108L1160 29Z" fill="#cfa719"/><path d="M80 28H1220L1180 124H112Z" fill="#ffda3f" stroke="#e2b82e" stroke-width="5"/></svg><div class="headline"><span class="tag">沖縄県民が表彰</span><span class="topic">我が地元代表アーティスト</span></div></div><div class="board" id="board"></div><svg class="medal" id="medal" viewBox="0 0 180 250"><defs><linearGradient id="m" x2="1" y2="1"><stop stop-color="#a27321"/><stop offset=".25" stop-color="#fff3b2"/><stop offset=".48" stop-color="#e8d18a"/><stop offset=".75" stop-color="#fff8c8"/><stop offset="1" stop-color="#a97b29"/></linearGradient><linearGradient id="r" x2="1" y2="1"><stop stop-color="#790016"/><stop offset=".5" stop-color="#ed1642"/><stop offset="1" stop-color="#81001d"/></linearGradient></defs><path d="M53 116L5 232L32 226L53 246L92 137L129 245L149 224L175 232L128 116Z" fill="url(#r)" stroke="#e7ba64" stroke-width="3"/><path d="M59 130L17 232M120 130L162 232" stroke="#ffe5a6" stroke-width="2"/><circle cx="90" cy="78" r="73" fill="#b60024" stroke="#e5b448" stroke-width="4" stroke-dasharray="3 3"/><circle cx="90" cy="78" r="65" fill="url(#m)" stroke="#9f712a" stroke-width="3"/><circle cx="90" cy="78" r="56" fill="#fff1be" fill-opacity=".45" stroke="#fff8db" stroke-width="2"/><text x="89" y="110" text-anchor="middle" font-family="Arial" font-style="italic" font-weight="900" font-size="89" fill="#fff" stroke="#85001c" stroke-width="3" paint-order="stroke fill">1<tspan font-size="31">位</tspan></text></svg><div class="spark" id="spark"></div><div class="criteria"><b>評価項目</b><span>①認知度　②好感度　③口ずさみ度<small>（サビが歌えるかなど）</small>　④地域貢献度　⑤自慢度</span></div></div></div><div class="hint">動画風の演出：10位から連続登場 → 2位を点滅 → 1位発表。クイズモード：各パネルをクリックして公開。Space＝次の順位、1＝第1位、F＝全画面。データは参考映像の表示を転記（MOGOL800も映像表記のまま）。</div></main><dialog id="editor"><h2>Ranking Creator</h2><p class="status">最大10位。写真は任意の画像URL。編集内容はこのブラウザーに保存されます。</p><div class="editor-head"><label>赤い見出し<input id="eTag"></label><label>タイトル<input id="eTitle"></label><label>数値のラベル<input id="eLabel"></label><label>単位<input id="eUnit"></label><label style="grid-column:1/-1">出典・説明<input id="eFooter"></label></div><div class="editor-row"><b>#</b><small>答え</small><small>数値</small><small>補足</small><small>写真URL</small></div><div id="eRows"></div><div class="editor-actions"><button class="primary" id="save">保存してクイズ開始</button><button id="sample">参考データに戻す</button><button id="export">JSON出力</button><button id="import">JSON読込</button><input id="file" type="file" accept="application/json,.json" hidden><button id="cancel">閉じる</button></div><p id="error" role="alert" class="status"></p></dialog><script>
+const DEFAULT={tag:'沖縄県民が表彰',title:'我が地元代表アーティスト',label:'総合点',unit:'pt',footer:'①認知度　②好感度　③口ずさみ度（サビが歌えるかなど）　④地域貢献度　⑤自慢度',rows:[['安室奈美恵','96.1'],['BEGIN','93.4'],['HY','90.6'],['MOGOL800','74.2'],['かりゆし58','69.7'],['夏川りみ','67.9'],['Kiroro','67.6'],['ORANGE RANGE','64.3'],['DA PUMP','60.3'],['THE BOOM','55.6','「♪島唄」']]};
+const $=id=>document.getElementById(id),board=$('board'),stage=$('stage');
+const clone=x=>JSON.parse(JSON.stringify(x));let model=clone(DEFAULT);try{const saved=localStorage.getItem('rankshow-tv-v1');if(saved)model=validate(JSON.parse(saved))}catch{}let ranks=[],timers=[],epoch=0,sound=false,ctx=null;
+function validate(x){if(!x||!Array.isArray(x.rows)||x.rows.length!==10||x.rows.some(r=>!Array.isArray(r)||typeof r[0]!=='string'||!r[0].trim()))throw Error('10件の答えを入力してください');const str=v=>String(v??'').slice(0,500);return {tag:str(x.tag),title:str(x.title),label:str(x.label),unit:str(x.unit),footer:str(x.footer),rows:x.rows.map(r=>[str(r[0]),str(r[1]),str(r[2]),str(r[3])])}}
+const later=(fn,ms)=>{const e=epoch;timers.push(setTimeout(()=>{if(e===epoch)fn()},ms))};const stop=()=>{epoch++;timers.forEach(clearTimeout);timers=[]};
+function tone(kind){if(!sound)return;try{ctx??=new (window.AudioContext||window.webkitAudioContext)();ctx.resume();const notes=kind==='win'?[523,659,784,1047]:kind==='drum'?[120,150,120,170,200]:[480,720];notes.forEach((hz,i)=>{const t=ctx.currentTime+i*(kind==='drum'?.11:.09),o=ctx.createOscillator(),g=ctx.createGain();o.type=kind==='drum'?'triangle':'sine';o.frequency.value=hz;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+.24);o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.25)})}catch{}}
+for(let i=0;i<18;i++){let el=document.createElement('i');let size=28+Math.random()*112;el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;--dur:${4+Math.random()*8}s;--dx:${Math.random()*110-55}px;--dy:${Math.random()*130-65}px;opacity:${.2+Math.random()*.65}`;$('bokeh').append(el)}
+function node(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function render(){stop();board.replaceChildren();document.querySelector('.headline .tag').textContent=model.tag;document.querySelector('.headline .topic').textContent=model.title;document.querySelector('.criteria span').textContent=model.footer;document.querySelector('.criteria b').textContent='出典・説明';ranks=model.rows.map(([n,s,sub,img],i)=>{const b=node('button','rank');b.type='button';b.setAttribute('aria-label',`${i+1}位を公開`);const num=node('span','num',String(i+1));num.append(node('small','', '位'));const answer=node('span','answer');answer.append(node('span','name',n));if(sub)answer.append(node('span','sub',sub));const score=node('span','score');const strong=node('strong','',s);strong.append(node('small','',model.unit));score.append(node('b','',model.label),strong);b.append(node('span','panel'),num);if(img&&/^https?:\/\//i.test(img)){const photo=node('img','thumb');photo.src=img;photo.alt='';photo.referrerPolicy='no-referrer';photo.onerror=()=>{photo.remove();fitNames()};b.append(photo)}b.append(answer,score,node('span','cover'));board.append(b);b.onclick=()=>{stop();if(i===0)winner();else show(i)};return b});document.fonts.ready.then(fitNames)}
+function fitNames(){ranks.forEach((r,i)=>{let n=r.querySelector('.name');n.style.fontSize=i===9?'59px':'76px';let max=r.querySelector('.answer').clientWidth-16;while(n.scrollWidth>max&&parseFloat(n.style.fontSize)>16)n.style.fontSize=parseFloat(n.style.fontSize)-1+'px'});const tag=document.querySelector('.headline .tag'),topic=document.querySelector('.headline .topic');tag.style.fontSize='48px';topic.style.fontSize='50px';while(tag.offsetWidth+topic.offsetWidth+20>1020&&parseFloat(topic.style.fontSize)>18){topic.style.fontSize=parseFloat(topic.style.fontSize)-1+'px';tag.style.fontSize=Math.max(18,parseFloat(tag.style.fontSize)-.7)+'px'}}
+function resize(){const v=$('viewport');stage.style.setProperty('--scale',Math.min(v.clientWidth/1500,v.clientHeight/843.75))}new ResizeObserver(resize).observe($('viewport'));resize();
+function clear(){stop();ranks.forEach(r=>{r.className='rank';r.style.animationDelay=''});$('medal').classList.remove('show');$('spark').replaceChildren()}
+function show(i,hide=false){let r=ranks[i],wasHidden=r.classList.contains('hidden-answer');if(!hide&&r.classList.contains('entered')&&!wasHidden)return;r.classList.add('entered');r.classList.toggle('hidden-answer',hide);if(!hide){tone('open');if(wasHidden&&i!==0)r.classList.add('opening');if(i===1)r.classList.add('runner')}}
+function winner(){let r=ranks[0];if(r.classList.contains('winner'))return;show(0);r.classList.add('winner','reveal');$('medal').classList.add('show');tone('win');for(let i=0;i<45;i++){let p=node('i');p.style.cssText=`--x:${70+Math.random()*90}px;--y:${150+Math.random()*90}px;--dx:${Math.random()*400-130}px;--dy:${Math.random()*340-150}px;--delay:${Math.random()*.35}s;--color:${['#fff','#ffef62','#fb1d58','#8fffd0'][i%4]}`;$('spark').append(p)}later(()=>$('spark').replaceChildren(),2300)}
+function auto(){clear();for(let i=9;i>=0;i--)later(()=>{show(i,i===0);if(i===1)ranks[1].classList.remove('runner')},500+(9-i)*135);later(()=>{ranks[1].classList.add('blink','runner');tone('drum')},2600);later(()=>{ranks[1].classList.remove('blink');winner()},5200)}
+function quiz(){clear();ranks.forEach((r,i)=>{r.classList.add('entered','hidden-answer');r.style.animationDelay=(9-i)*55+'ms'});later(()=>ranks.forEach(r=>r.style.animationDelay=''),1000)}
+function next(){stop();for(let i=9;i>=0;i--)if(!ranks[i].classList.contains('entered')||ranks[i].classList.contains('hidden-answer')){if(i===0)winner();else show(i);return}}
+$('auto').onclick=auto;$('quiz').onclick=quiz;$('next').onclick=next;$('first').onclick=()=>{stop();winner()};$('reset').onclick=quiz;const full=()=>document.fullscreenElement?document.exitFullscreen():$('viewport').requestFullscreen?.().catch(()=>{});$('full').onclick=full;$('sound').onclick=()=>{sound=!sound;$('sound').textContent='音声 '+(sound?'ON':'OFF');tone('open')};
+document.addEventListener('keydown',e=>{if(e.repeat||$('editor').open||/INPUT|TEXTAREA|BUTTON/.test(e.target.tagName)&&e.code==='Space')return;if(e.code==='Space'){e.preventDefault();next()}if(e.key==='1'){stop();winner()}if(e.key.toLowerCase()==='f')full()});
+const ids=['eTag','eTitle','eLabel','eUnit','eFooter'],keys=['tag','title','label','unit','footer'];function editorFill(m){ids.forEach((id,i)=>$(id).value=m[keys[i]]);$('eRows').replaceChildren();m.rows.forEach((r,i)=>{const row=node('div','editor-row');row.append(node('b','',String(i+1)));['答え','数値','補足','写真URL'].forEach((label,j)=>{const input=node('input');input.value=r[j]||'';input.setAttribute('aria-label',`${i+1}位 ${label}`);input.placeholder=label;row.append(input)});$('eRows').append(row)});$('error').textContent=''}function editorRead(){const x={};ids.forEach((id,i)=>x[keys[i]]=$(id).value);x.rows=[...$('eRows').children].map(row=>[...row.querySelectorAll('input')].map(input=>input.value));return validate(x)}$('edit').onclick=()=>{stop();editorFill(model);$('editor').showModal()};$('cancel').onclick=()=>$('editor').close();$('sample').onclick=()=>editorFill(DEFAULT);$('save').onclick=()=>{try{model=editorRead();try{localStorage.setItem('rankshow-tv-v1',JSON.stringify(model))}catch{}$('editor').close();render();quiz()}catch(e){$('error').textContent=e.message}};$('export').onclick=()=>{try{const url=URL.createObjectURL(new Blob([JSON.stringify(editorRead(),null,2)],{type:'application/json'}));const a=node('a');a.href=url;a.download='ranking.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(e){$('error').textContent=e.message}};$('import').onclick=()=>$('file').click();$('file').onchange=async()=>{try{const f=$('file').files[0];if(f)editorFill(validate(JSON.parse(await f.text())))}catch(e){$('error').textContent=e.message}finally{$('file').value=''}};
+render();quiz();
+</script></body></html>
