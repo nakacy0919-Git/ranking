@@ -366,6 +366,10 @@ html,body{height:100%;min-height:0!important;overflow:hidden}body{margin:0}main{
 @media(prefers-reduced-motion:reduce){.face-scan36,.metal-scan36,.panel-star36,.mask-star36,.stage[data-theme]:not([data-theme=tv]) .rank .panel::after{animation:none!important}.stage .medal.show{animation:medal31 .01s both}}
 
 .stage:lang(en) .rank .num small{font-size:18px;letter-spacing:-.8px}.stage:lang(en) .headline .topic{letter-spacing:-.035em!important}.language-row{display:flex;align-items:center;justify-content:space-between;gap:9px}.dock>button[data-action=language]{font-size:10px;font-weight:800}
+
+/* 3.8.1 — clean runner-up frame, retain gold highlight */
+.stage .rank.runner,.stage .rank.runner:not(.vector-tv),.stage .rank.runner.blink{outline:none!important;box-shadow:none!important}
+.stage .rank .vector-art .runner-stroke{display:none!important;opacity:0!important;animation:none!important}
 </style></head><body><header><div><b>RANKSHOW TV</b> <small>TVクイズスタジオ</small></div><div class="tools"><button class="primary" id="auto">▶ 動画風の演出</button><button id="quiz">クイズモード</button><button id="next">次の順位</button><button id="first">1位発表</button><button id="reset">リセット</button><button id="full">全画面</button><button id="sound">音声 OFF</button><button id="edit">教材編集</button></div></header><main><div class="viewport" id="viewport"><div class="stage" id="stage"><div class="bokeh" id="bokeh"></div><div class="banner"><svg viewBox="0 0 1300 126" xmlns="http://www.w3.org/2000/svg">
 <defs><linearGradient id="ribbonFront" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff3a3"/><stop offset=".06" stop-color="#ffe878"/><stop offset=".5" stop-color="#ffda3f"/><stop offset="1" stop-color="#ffdf50"/></linearGradient><linearGradient id="ribbonWing" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe98a"/><stop offset="1" stop-color="#f8ca30"/></linearGradient></defs>
 <path d="M5 5H121L145 29H1155L1179 5H1295Q1258 35 1252 91H48Q42 35 5 5Z" fill="#ffda3f" stroke="#fffce5" stroke-width="3" stroke-linejoin="round"/>
@@ -680,7 +684,7 @@ if(!still)for(const m of meteors){const u=((t/m.period+m.phase)%1);if(u>.26)cont
 function loop(ms){frame=requestAnimationFrame(loop);if(document.hidden)return;const theme=stage.dataset.theme||'tv',motion=!stage.classList.contains('motion-off')&&!reduced.matches;if(!motion&&lastTheme===theme&&lastMotion===motion)return;if(motion&&ms-last<1000/30&&lastTheme===theme&&lastMotion===motion)return;last=ms;lastTheme=theme;lastMotion=motion;if(g)draw(motion?ms/1000:0,palettes[theme]||palettes.tv,!motion)}
 if(g)frame=requestAnimationFrame(loop);
 window.addEventListener('pagehide',()=>cancelAnimationFrame(frame));window.addEventListener('pageshow',e=>{if(e.persisted&&g)frame=requestAnimationFrame(loop)});
-const panel=document.querySelector('.dock-panel');document.title='RankShow TV 3.8';panel.querySelector('h3').textContent='RANKSHOW TV / 3.8';window.rankSyncLanguageUI?.();fitNames();document.fonts.ready.then(fitNames);
+const panel=document.querySelector('.dock-panel');document.title='RankShow TV 3.8.1';panel.querySelector('h3').textContent='RANKSHOW TV / 3.8.1';window.rankSyncLanguageUI?.();fitNames();document.fonts.ready.then(fitNames);
 })();
 
 </script></body></html>
